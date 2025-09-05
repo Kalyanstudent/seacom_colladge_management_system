@@ -1,8 +1,6 @@
 <?php 
-
-
+// future PHP login code
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +11,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      background: url("include/image/log_in.jpg");
-      background-size: cover;
+      background: url("include/image/log_in.jpg") no-repeat center center/cover;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -27,6 +24,18 @@
       box-shadow: 0 0 15px rgba(17, 17, 17, 0.53);
       padding: 30px;
       background: rgba(255, 255, 255, 0.15);
+    }
+    /* Custom Login Button */
+    .btn-login {
+      border: 2px solid #0d6efd;  /* blue border */
+      background: transparent;    /* no fill */
+      color: #0d6efd;             /* blue text */
+      font-weight: 500;
+      transition: 0.3s;
+    }
+    .btn-login:hover {
+      background: #0d6efd;  /* fill on hover */
+      color: #fff;          /* white text */
     }
   </style>
 </head>
@@ -46,7 +55,7 @@
         </select>
       </div>
 
-      <!-- Email / Username -->
+      <!-- Username -->
       <div class="mb-3">
         <label for="username" class="form-label">Username or Email</label>
         <input type="text" class="form-control" id="username" placeholder="Enter username or email" required>
@@ -67,7 +76,7 @@
       </div>
 
       <!-- Login Button -->
-      <button type="submit" class="btn btn-primary w-100">Login</button>
+      <button type="submit" class="btn btn-login w-100">Login</button>
     </form>
   </div>
 
