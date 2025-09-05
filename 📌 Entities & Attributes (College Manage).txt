@@ -1,0 +1,86 @@
+📌 Entities & Attributes (College Management System)
+1. Admin
+
+Admin_ID (PK)
+
+Name
+
+Email
+
+Password
+
+2. Department
+
+Dept_ID (PK)
+
+Dept_Name
+
+3. Teacher
+
+Teacher_ID (PK)
+
+Name
+
+Email
+
+Password
+
+Dept_ID (FK)
+
+4. Student
+
+Student_ID (PK)
+
+Name
+
+Email
+
+Password
+
+Dept_ID (FK)
+
+5. Notice
+
+Notice_ID (PK)
+
+Title
+
+Description
+
+Date
+
+Created_By (FK → Admin_ID)
+
+6. Class
+
+Class_ID (PK)
+
+Class_Name
+
+Dept_ID (FK)
+
+Teacher_ID (FK)
+
+7. Attendance
+
+Attendance_ID (PK)
+
+Student_ID (FK)
+
+Class_ID (FK)
+
+Date
+
+Status (Present/Absent)
+
+📊 Relationships
+
+Admin → Teacher/Student/Department/Notice (Admin manages all)
+
+Department → Teacher & Student (One dept has many teachers & students)
+
+Teacher → Class (One teacher can take many classes)
+
+Student → Class (Many students can attend many classes → M:N relationship, solved using Attendance)
+
+Notice → Admin (Notices are created by Admin, visible to Teacher/Student)
