@@ -13,7 +13,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      background: #f1f3f6;
+      background: url("include/image/log_in.jpg");
+      background-size: cover;
       display: flex;
       justify-content: center;
       align-items: center;
