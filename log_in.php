@@ -1,86 +1,273 @@
-<?php 
-// future PHP login code
-?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Role Based Login</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CIRMS | Examination System Login</title>
+  <link rel="stylesheet" href="style.css">
+
   <style>
     body {
-      background: url("include/image/log_in.jpg") no-repeat center center/cover;
+      margin: 0;
+      padding: 0;
+      background: #f3f3f3;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Container */
+    .container {
+      text-align: center;
+      padding: 40px;
+    }
+
+    .title {
+      font-size: 28px;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    /* Login Boxes */
+    .login-boxes {
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      gap: 30px;
+      flex-wrap: wrap;
     }
-    .login-card {
-      max-width: 400px;
-      width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(17, 17, 17, 0.53);
-      padding: 30px;
-      background: rgba(255, 255, 255, 0.15);
-    }
-    /* Custom Login Button */
-    .btn-login {
-      border: 2px solid #0d6efd;  /* blue border */
-      background: transparent;    /* no fill */
-      color: #0d6efd;             /* blue text */
-      font-weight: 500;
+
+    .box {
+      width: 250px;
+      padding: 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: black;
+      background: white;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
       transition: 0.3s;
+      text-align: center;
     }
-    .btn-login:hover {
-      background: #0d6efd;  /* fill on hover */
-      color: #fff;          /* white text */
+
+    .box:hover {
+      transform: translateY(-5px);
+    }
+
+    .icon {
+      width: 60px;
+      margin-bottom: 10px;
+    }
+
+    .student {
+      border-top: 6px solid #2196f3;
+    }
+
+    .teacher {
+      border-top: 6px solid #ff9800;
+    }
+
+    .admin {
+      border-top: 6px solid #4caf50;
+    }
+
+    /* Header */
+    header {
+      padding: 12px 20px;
+      background: #003366;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      width: 50px;
+      height: 50px;
+      background: white;
+      border-radius: 6px;
+      padding: 5px;
+    }
+
+    .small-icon {
+      width: 18px;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      font-size: 28px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Mobile Menu */
+    #mobileMenu {
+      display: none;
+      background: #003366;
+      padding: 15px;
+      text-align: left;
+    }
+
+    #mobileMenu a {
+      display: block;
+      padding: 10px 0;
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    #mobileMenu.show {
+      display: block;
+    }
+
+    /* Footer */
+    footer {
+      width: 100%;
+      background: #003366;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    @media(max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
     }
   </style>
+
 </head>
+
 <body>
 
-  <div class="login-card">
-    <h3 class="text-center mb-4">Login</h3>
-    <form>
-      <!-- Role Selection -->
-      <div class="mb-3">
-        <label for="role" class="form-label">Select Role</label>
-        <select class="form-select" id="role" required>
-          <option value="">-- Choose Role --</option>
-          <option value="student">Student</option>
-          <option value="teacher">Teacher</option>
-          <option value="admin">Admin</option>
-        </select>
+  <!-- HEADER -->
+  <header>
+    <div class="logo-wrap">
+      <img src="logo.png" alt="CIRMS logo" class="logo-img">
+      <div class="logo-text">
+        <div class="logo-title">College Information & Resource Management System</div>
+        <div class="logo-sub">CIRMS — Mobile Friendly Portal</div>
       </div>
+    </div>
 
-      <!-- Username -->
-      <div class="mb-3">
-        <label for="username" class="form-label">Username or Email</label>
-        <input type="text" class="form-control" id="username" placeholder="Enter username or email" required>
-      </div>
+    <!-- Desktop Navigation -->
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
 
-      <!-- Password -->
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="Enter password" required>
-      </div>
+      <a href="student-login.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" class="small-icon"> Student
+      </a>
 
-      <!-- Remember Me -->
-      <div class="form-check mb-3">
-        <input class="form-check-input" type="checkbox" value="" id="remember">
-        <label class="form-check-label" for="remember">
-          Remember me
-        </label>
-      </div>
+      <a href="teacher-login.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png" class="small-icon"> Teacher
+      </a>
 
-      <!-- Login Button -->
-      <button type="submit" class="btn btn-login w-100">Login</button>
-    </form>
+      <a href="admin-login.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828506.png" class="small-icon"> Admin
+      </a>
+    </nav>
+
+    <!-- Hamburger Menu -->
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="student-login.html">Student Login</a>
+    <a href="teacher-login.html">Teacher Login</a>
+    <a href="admin-login.html">Admin Login</a>
   </div>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- MAIN CONTENT -->
+  <div class="container">
+
+    <h2 class="title">EXAMINATION SYSTEM</h2>
+
+    <div class="login-boxes">
+
+      <a href="student-login.html" class="box student">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" class="icon">
+        <h3>STUDENT LOGIN</h3>
+        <p>Click here to login</p>
+      </a>
+
+      <a href="teacher-login.html" class="box teacher">
+        <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png" class="icon">
+        <h3>TEACHER LOGIN</h3>
+        <p>Click here to login</p>
+      </a>
+
+      <a href="admin-login.html" class="box admin">
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828506.png" class="icon">
+        <h3>ADMIN LOGIN</h3>
+        <p>Click here to login</p>
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">
+      © <span id="year"></span> CIRMS | All Rights Reserved<br>
+      College Location: Kolkata, West Bengal, India
+    </div>
+
+    <div class="footer-right">
+      Helpline: +91 98765 43210<br>
+      Email: support@college.ac.in
+    </div>
+  </footer>
+
 </body>
+
 </html>
+
+<script>
+  // Auto update year
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Mobile menu toggle
+  function toggleMenu() {
+    document.getElementById("mobileMenu").classList.toggle("show");
+  }
+</script>
