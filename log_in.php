@@ -147,7 +147,6 @@
 
     /* Footer */
     footer {
-      width: 100%;
       background: #003366;
       color: white;
       padding: 15px;
@@ -180,7 +179,7 @@
   <!-- HEADER -->
   <header>
     <div class="logo-wrap">
-      <img src="logo.png" alt="CIRMS logo" class="logo-img">
+      <img src="include/image/logo.jpg" alt="CIRMS logo" class="logo-img">
       <div class="logo-text">
         <div class="logo-title">College Information & Resource Management System</div>
         <div class="logo-sub">CIRMS — Mobile Friendly Portal</div>
