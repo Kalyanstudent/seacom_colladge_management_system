@@ -1,32 +1,30 @@
 <?php
 include "include/db_connection.php";
 
-if(isset($_POST['login'])) {
 
+header('Content-Type: application/json');
+
+$response = [];
+
+if(isset($_POST['login'])) {
     $role = $_POST['role'];
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    if($role == 'student'){
-        $table = "students";
-    } elseif($role == 'teacher'){
-        $table = "teachers";
+    // test purpose
+    if($email == "test@gmail.com" && $password == "123") {
+        $response['success'] = 1;
+        $response['message'] = "Login successful";
     } else {
-        $table = "admins";
+        $response['success'] = 0;
+        $response['message'] = "Invalid email or password";
     }
-
-    $check = mysqli_query($conn, "SELECT * FROM $table WHERE email='$email' AND password='$password'");
-
-    if(mysqli_num_rows($check) > 0){
-        echo json_encode([
-            "success" => 1,
-            "message" => "Login Success"
-        ]);
-    } else {
-        echo json_encode([
-            "success" => 0,
-            "message" => "Invalid Email or Password"
-        ]);
-    }
+} else {
+    $response['success'] = 0;
+    $response['message'] = "Invalid request";
 }
+
+echo json_encode($response);
+
+
 ?>
