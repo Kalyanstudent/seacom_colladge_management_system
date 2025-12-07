@@ -6,8 +6,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CIRMS | Examination System Login</title>
   <link rel="stylesheet" href="style.css">
-
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      flex: 1;
+      /* footer কে নিচে ঠেলে রাখবে */
+    }
+
+    footer {
+      margin-top: auto;
+      /* sticky bottom fix */
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -19,6 +40,9 @@
     .container {
       text-align: center;
       padding: 40px;
+      background-image: url("include/image/frontpage_background.jpg");
+      background-size: cover;
+      background-position: center;
     }
 
     .title {
@@ -170,7 +194,52 @@
         gap: 10px;
       }
     }
+
+    /* MODAL STYLES */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      width: 90%;
+      max-width: 350px;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .modal-content input {
+      width: 85%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    .modal-content button {
+      width: 92%;
+      padding: 10px;
+      border: none;
+      background: #003366;
+      color: white;
+      cursor: pointer;
+    }
+
+    .close {
+      float: right;
+      font-size: 22px;
+      cursor: pointer;
+    }
   </style>
+
+
 
 </head>
 
@@ -222,25 +291,26 @@
 
     <div class="login-boxes">
 
-      <a href="student-login.html" class="box student">
+      <div class="box student" onclick="openModal('studentModal')">
         <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" class="icon">
         <h3>STUDENT LOGIN</h3>
         <p>Click here to login</p>
-      </a>
+      </div>
 
-      <a href="teacher-login.html" class="box teacher">
+      <div class="box teacher" onclick="openModal('teacherModal')">
         <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png" class="icon">
         <h3>TEACHER LOGIN</h3>
         <p>Click here to login</p>
-      </a>
+      </div>
 
-      <a href="admin-login.html" class="box admin">
+      <div class="box admin" onclick="openModal('adminModal')">
         <img src="https://cdn-icons-png.flaticon.com/512/1828/1828506.png" class="icon">
         <h3>ADMIN LOGIN</h3>
         <p>Click here to login</p>
-      </a>
+      </div>
 
     </div>
+
 
   </div>
 
@@ -257,9 +327,42 @@
     </div>
   </footer>
 
+
 </body>
 
 </html>
+<!-- STUDENT MODAL -->
+<div id="studentModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('studentModal')">&times;</span>
+    <h2>Student Login</h2>
+    <input type="text" id="student_email" placeholder="Student Email / ID">
+    <input type="password" id="student_password" placeholder="Password">
+    <button onclick="studentLogin()">Login</button>
+  </div>
+</div>
+
+<!-- TEACHER MODAL -->
+<div id="teacherModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('teacherModal')">&times;</span>
+    <h2>Teacher Login</h2>
+    <input type="text" id="teacher_email" placeholder="Email or ID">
+    <input type="password" id="teacher_password" placeholder="Password">
+    <button onclick="teacherLogin()">Login</button>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
+<div id="adminModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('adminModal')">&times;</span>
+    <h2>Admin Login</h2>
+    <input type="text" id="admin_email" placeholder="Admin Username">
+    <input type="password" id="admin_password" placeholder="Password">
+    <button onclick="adminLogin()">Login</button>
+  </div>
+</div>
 
 <script>
   // Auto update year
@@ -269,4 +372,72 @@
   function toggleMenu() {
     document.getElementById("mobileMenu").classList.toggle("show");
   }
+
+  function openModal(id) {
+    document.getElementById(id).style.display = "block";
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).style.display = "none";
+  }
+
+  window.onclick = function (event) {
+    if (event.target.classList.contains('modal')) {
+      event.target.style.display = "none";
+    }
+  }
+  function studentLogin() {
+    let email = $("#student_email").val();
+    let pass = $("#student_password").val();
+
+    loginAjax('student', email, pass);
+  }
+
+  function teacherLogin() {
+    let email = $("#teacher_email").val();
+    let pass = $("#teacher_password").val();
+
+    loginAjax('teacher', email, pass);
+  }
+
+  function adminLogin() {
+    let email = $("#admin_email").val();
+    let pass = $("#admin_password").val();
+
+    loginAjax('admin', email, pass);
+  }
+
+  // MAIN AJAX FUNCTION (same style as your getlocation)
+  function loginAjax(role, email, password) {
+
+    var formData = new FormData();
+    formData.append('login', 1);
+    formData.append('role', role);
+    formData.append('email', email);
+    formData.append('password', password);
+
+    $.ajax({
+      url: "login-check.php",   // backend file
+      data: formData,
+      dataType: 'json',
+      type: 'POST',
+      contentType: false,
+      processData: false,
+      success: function (r) {
+        if (r.success == 1) {
+          alert("Login Successful");
+
+          // চাইলে redirect দিতে পারবেন
+          // window.location.href = "dashboard.php";
+
+        } else {
+          alert(r.message);
+        }
+      }
+    });
+  }
+
+
+
+
 </script>
