@@ -3,13 +3,6 @@ include "include/db_connection.php";
 
 if(isset($_POST['login'])) {
 
-        echo json_encode([
-            "success" => 1,
-            "message" => "Login Success"
-        ]);
-        
-        die();
-
     $role = $_POST['role'];
     $email = $_POST['email'];
     $password = $_POST['password'];

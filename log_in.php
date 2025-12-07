@@ -141,6 +141,22 @@
       text-decoration: underline;
     }
 
+    .nav-links button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-links button:hover {
+      text-decoration: underline;
+    }
+
+
     /* Hamburger */
     .hamburger {
       display: none;
@@ -154,20 +170,30 @@
       display: none;
       background: #003366;
       padding: 15px;
-      text-align: left;
-    }
-
-    #mobileMenu a {
-      display: block;
-      padding: 10px 0;
-      color: white;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     #mobileMenu.show {
       display: block;
     }
+
+    #mobileMenu button {
+      width: 100%;
+      padding: 10px;
+      background: none;
+      border: none;
+      color: white;
+      text-align: left;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    #mobileMenu button:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
 
     /* Footer */
     footer {
@@ -257,19 +283,19 @@
 
     <!-- Desktop Navigation -->
     <nav class="nav-links">
-      <a href="index.html">Home</a>
+      <button onclick="location.href='log_in.php'">Home</button>
 
-      <a href="student-login.html">
+      <button onclick="openModal('studentModal')">
         <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" class="small-icon"> Student
-      </a>
+      </button>
 
-      <a href="teacher-login.html">
+      <button onclick="openModal('teacherModal')">
         <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png" class="small-icon"> Teacher
-      </a>
+      </button>
 
-      <a href="admin-login.html">
+      <button onclick="openModal('adminModal')">
         <img src="https://cdn-icons-png.flaticon.com/512/1828/1828506.png" class="small-icon"> Admin
-      </a>
+      </button>
     </nav>
 
     <!-- Hamburger Menu -->
@@ -278,11 +304,21 @@
 
   <!-- MOBILE MENU -->
   <div id="mobileMenu">
-    <a href="index.html">Home</a>
-    <a href="student-login.html">Student Login</a>
-    <a href="teacher-login.html">Teacher Login</a>
-    <a href="admin-login.html">Admin Login</a>
+    <button onclick="location.href='log_in.php'">Home</button>
+
+    <button onclick="openModal('studentModal')" class="mobile-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" class="small-icon"> Student
+    </button>
+
+    <button onclick="openModal('teacherModal')" class="mobile-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png" class="small-icon"> Teacher
+    </button>
+
+    <button onclick="openModal('adminModal')" class="mobile-btn">
+      <img src="https://cdn-icons-png.flaticon.com/512/1828/1828506.png" class="small-icon"> Admin
+    </button>
   </div>
+
 
   <!-- MAIN CONTENT -->
   <div class="container">
