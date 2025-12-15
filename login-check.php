@@ -3,28 +3,62 @@ include "include/db_connection.php";
 
 
 header('Content-Type: application/json');
+// login-check.php
+session_start();
 
-$response = [];
-
-if(isset($_POST['login'])) {
-    $role = $_POST['role'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-
-    // test purpose
-    if($email == "test@gmail.com" && $password == "123") {
-        $response['success'] = 1;
-        $response['message'] = "Login successful";
-    } else {
-        $response['success'] = 0;
-        $response['message'] = "Invalid email or password";
-    }
-} else {
-    $response['success'] = 0;
-    $response['message'] = "Invalid request";
+// Check request method
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Invalid request"
+    ]);
+    exit;
 }
 
-echo json_encode($response);
+// Get form data
+$email    = trim($_POST['email'] ?? '');
+$password = trim($_POST['password'] ?? '');
 
+if ($email === '' || $password === '') {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Email and Password required"
+    ]);
+    exit;
+}
 
+// Prepare SQL
+$sql = "SELECT User_ID, email, password FROM users WHERE email = ? LIMIT 1";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 1) {
+    $row = $result->fetch_assoc();
+
+    // If password is hashed (recommended)
+    if (password_verify($password, $row['password'])) {
+        $_SESSION['user_id'] = $row['User_ID'];
+        $_SESSION['email']   = $row['email'];
+
+        echo json_encode([
+            "status" => "success",
+            "message" => "Login successful"
+        ]);
+    } else {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Wrong password"
+        ]);
+    }
+} else {
+    echo json_encode([
+        "status" => "error",
+        "message" => "User not found"
+    ]);
+}
+
+$stmt->close();
+$conn->close();
 ?>
