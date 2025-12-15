@@ -8,11 +8,14 @@ $response = [
     "message" => "Invalid request"
 ];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' 
-    && isset($_POST['login']) 
-    && $_POST['login'] == 1) {
+if (
+    $_SERVER['REQUEST_METHOD'] === 'POST'
+    && isset($_POST['login'])
+    && $_POST['login'] == 1
+) {
 
-    $email    = trim($_POST['email'] ?? '');
+    // Get inputs
+    $email = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
     if ($email === '' || $password === '') {
@@ -21,17 +24,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
         exit;
     }
 
-    $stmt = $conn->prepare("SELECT id, email, password FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Escape email (VERY IMPORTANT)
+    $email = mysqli_real_escape_string($conn, $email);
 
-    if ($result->num_rows === 1) {
-        $user = $result->fetch_assoc();
+    //  Correct SQL (email must be in quotes)
+    $sql = "SELECT User_ID, email, password 
+        FROM users 
+        WHERE email = '" . $email . "'";
 
+
+    $result = mysqli_query($conn, $sql);
+
+    if ($result && mysqli_num_rows($result) === 1) {
+        $user = mysqli_fetch_assoc($result);
+
+        // Verify encrypted password
         if (password_verify($password, $user['password'])) {
             $_SESSION['email'] = $user['email'];
-            $_SESSION['id']    = $user['id'];
+            $_SESSION['User_ID'] = $user['User_ID'];
 
             $response['success'] = 1;
             $response['message'] = "Login successful";
@@ -42,8 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'
         $response['message'] = "Email does not exist";
     }
 
-    $stmt->close();
-    $conn->close();
+    mysqli_close($conn);
 }
 
 echo json_encode($response);
