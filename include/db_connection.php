@@ -11,8 +11,4 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// ✅ Connection successful
-echo "Connected successfully";
-
-// Proceed with further code here...
 ?>
