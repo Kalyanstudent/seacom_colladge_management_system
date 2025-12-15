@@ -463,7 +463,7 @@
         if (r.success == 1) {
           alert("Login Successful");
 
-          // চাইলে redirect দিতে পারবেন
+          // 
           // window.location.href = "dashboard.php";
 
         } else {
