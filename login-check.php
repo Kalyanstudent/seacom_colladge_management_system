@@ -1,64 +1,48 @@
 <?php
+
+session_start();
 include "include/db_connection.php";
-
-
 header('Content-Type: application/json');
 // login-check.php
-session_start();
 
-// Check request method
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode([
-        "status" => "error",
-        "message" => "Invalid request"
-    ]);
-    exit;
-}
 
-// Get form data
-$email    = trim($_POST['email'] ?? '');
-$password = trim($_POST['password'] ?? '');
+if ($_SERVER['REQUEST_METHOD'] === 'POST' 
+    && isset($_POST['log_in']) 
+    && $_POST['login'] == 1) {
 
-if ($email === '' || $password === '') {
-    echo json_encode([
-        "status" => "error",
-        "message" => "Email and Password required"
-    ]);
-    exit;
-}
+    // Get inputs
+    $email    = trim($_POST['email']);
+    $password = trim($_POST['password']);
 
-// Prepare SQL
-$sql = "SELECT User_ID, email, password FROM users WHERE email = ? LIMIT 1";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows === 1) {
-    $row = $result->fetch_assoc();
-
-    // If password is hashed (recommended)
-    if (password_verify($password, $row['password'])) {
-        $_SESSION['user_id'] = $row['User_ID'];
-        $_SESSION['email']   = $row['email'];
-
-        echo json_encode([
-            "status" => "success",
-            "message" => "Login successful"
-        ]);
-    } else {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Wrong password"
-        ]);
+    if ($email == '' || $password == '') {
+        echo "Email and password required";
+        exit;
     }
-} else {
-    echo json_encode([
-        "status" => "error",
-        "message" => "User not found"
-    ]);
+
+    // Email check
+    $stmt = $conn->prepare("SELECT id, email, password FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+
+        // Password verify (encrypted)
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['id']    = $user['id'];
+
+            echo "Login successful";
+        } else {
+            echo "Incorrect password";
+        }
+    } else {
+        echo "Email does not exist";
+    }
+
+    $stmt->close();
+    $conn->close();
+    exit;
 }
 
-$stmt->close();
-$conn->close();
-?>
